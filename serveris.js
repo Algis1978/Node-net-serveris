@@ -31,12 +31,13 @@ function readHeaders(socket) {
 async function handler(socket) {
   let data;
   try {
-    data = await readHeaders(socket);
-    const lines = data.split("\r\n");
-    let [, resource] = lines[0].split(" ");
-    const f = path.join(WEB, resource);
+    data = await readHeaders(socket); // skaito užklausos headerius
+    console.log(data);
+    const lines = data.split("\r\n"); // paima pirmą eilutę iš header
+    let [, resource] = lines[0].split(" "); // paimamas tik resurso pavadinimas
+    const f = path.join(WEB, resource); // ieškomas bylos pavadinimas (WEB kataloge, apjungimas kelių wEB su resource).
 
-    let res = "";
+    let res = ""; // bylos skaitymas
     try {
       const stat = await fs.stat(f);
       if (stat.isFile()) {
@@ -49,7 +50,7 @@ async function handler(socket) {
       } else if (stat.isDirectory()) {
         const files = await fs.readdir(f);
         resource += (!resource.endsWith("/")) ? "/" : "";
-        res += "HTTP/1.1 200 OK\r\n";
+        res += "HTTP/1.1 200 OK\r\n"; // radus failą sugeneruojamas pranešimas.
         res += "\r\n";
         res += `<html>\r\n`;
         res += `<body>\r\n`;
@@ -66,19 +67,20 @@ async function handler(socket) {
         res += "HTTP/1.1 400 Bad Request\r\n";
         res += "\r\n";
       }
-    } catch (err) {
+    } catch (err) { // neradus bylos pateikiamas klaido pranešimas
       res += "HTTP/1.1 404 Not Found\r\n";
       res += "\r\n";
     }
-    socket.write(res, "utf8");
-  } catch (err) {
+    socket.write(res, "utf8"); // siunčiamas atsakymas į užklausą (res, koduotas utf8)
+
+  } catch (err) { // dar vienos klaidos ieškojimas prieš uždarant soketą.
     console.log(data);
     console.log("Klaida", err);
     let res = "HTTP/1.1 400 Bad Request\r\n";
     res += "\r\n";
     socket.write(res, "utf8");
   } finally {
-    socket.end();
+    socket.end(); // uždariomas soketas
   }
 }
 

@@ -1,0 +1,41 @@
+body {
+  background-color: bisque;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+header {
+  background-color: brown;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+}
+h1,
+h2,
+h3,
+h4 {
+  text-align: center;
+}
+h1 {
+  color: white;
+  padding: 3rem 6rem 3rem 6rem;
+}
+main {
+  margin: 2%;
+}
+p {
+  text-indent: 3rem;
+  font-size: larger;
+}
+figure {
+  float: right;
+  border: 3px solid tomato;
+  border-radius: 8px;
+}
+img {
+  width: 260px;
+  height: auto;
+  padding: 6px;
+}
+figcaption {
+  text-align: center;
+}
